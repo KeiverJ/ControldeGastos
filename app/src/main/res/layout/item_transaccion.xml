@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardTransaccion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Barra de color de categoría -->
+        <View
+            android:id="@+id/viewColorCategoria"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:background="#5DADE2" />
+
+        <!-- Contenido principal -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Descripción y Tipo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvDescripcion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Descripción"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#2C3E50"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:id="@+id/tvTipo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="+ Ingreso"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#4CAF50"
+                    android:fontFamily="sans-serif-medium"
+                    android:background="@drawable/bg_tipo_badge"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp" />
+
+            </LinearLayout>
+
+            <!-- Categoría -->
+            <TextView
+                android:id="@+id/tvCategoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="🍔 Alimentación"
+                android:textSize="13sp"
+                android:textColor="#7F8C8D"
+                android:fontFamily="sans-serif" />
+
+            <!-- Fecha -->
+            <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="07 Nov 2024"
+                android:textSize="12sp"
+                android:textColor="#95A5A6"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+
+        <!-- Monto y Botones -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end|center_vertical"
+            android:layout_marginStart="12dp">
+
+            <!-- Monto -->
+            <TextView
+                android:id="@+id/tvMonto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$50,000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#4CAF50"
+                android:fontFamily="sans-serif-medium" />
+
+            <!-- Botones de Acción -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <!-- Botón Editar -->
+                <ImageButton
+                    android:id="@+id/btnEditar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_btn_editar"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:contentDescription="Editar"
+                    android:scaleType="centerInside"
+                    android:padding="6dp"
+                    android:tint="#5DADE2"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Botón Eliminar -->
+                <ImageButton
+                    android:id="@+id/btnEliminar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_btn_eliminar"
+                    android:src="@android:drawable/ic_menu_delete"
+                    android:contentDescription="Eliminar"
+                    android:scaleType="centerInside"
+                    android:padding="6dp"
+                    android:tint="#E74C3C" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F4F8"
+    tools:context=".activities.AgregarTransaccionActivity">
+
+    <!-- AppBar con Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/gradient_toolbar"
+            app:titleTextColor="@android:color/white"
+            app:navigationIcon="?attr/homeAsUpIndicator" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido del formulario -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Tarjeta del formulario -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💰 Nueva Transacción"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C3E50"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="24dp" />
+
+                    <!-- Tipo de transacción -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#34495E"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <RadioGroup
+                        android:id="@+id/rgTipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
+
+                        <RadioButton
+                            android:id="@+id/rbIngreso"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="↗️ Ingreso"
+                            android:textSize="16sp"
+                            android:textColor="#27AE60"
+                            android:fontFamily="sans-serif-medium"
+                            android:buttonTint="#27AE60"
+                            android:padding="12dp"
+                            android:background="@drawable/bg_radio_button"
+                            android:layout_marginEnd="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/rbGasto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="↘️ Gasto"
+                            android:textSize="16sp"
+                            android:textColor="#E74C3C"
+                            android:fontFamily="sans-serif-medium"
+                            android:buttonTint="#E74C3C"
+                            android:padding="12dp"
+                            android:background="@drawable/bg_radio_button"
+                            android:layout_marginStart="8dp"
+                            android:checked="true" />
+
+                    </RadioGroup>
+
+                    <!-- Monto -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monto"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#34495E"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        app:boxBackgroundMode="outline"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeColor="#5DADE2"
+                        app:hintTextColor="#5DADE2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etMonto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Ej: 50000"
+                            android:inputType="numberDecimal"
+                            android:textSize="16sp"
+                            android:textColor="#2C3E50"
+                            android:fontFamily="sans-serif"
+                            android:padding="16dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Descripción -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Descripción"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#34495E"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        app:boxBackgroundMode="outline"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeColor="#5DADE2"
+                        app:hintTextColor="#5DADE2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDescripcion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Ej: Supermercado"
+                            android:inputType="textCapSentences"
+                            android:textSize="16sp"
+                            android:textColor="#2C3E50"
+                            android:fontFamily="sans-serif"
+                            android:padding="16dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Categoría -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Categoría"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#34495E"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCategorias"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_spinner"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Fecha -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#34495E"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <EditText
+                        android:id="@+id/etFecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="Seleccionar fecha"
+                        android:textSize="16sp"
+                        android:textColor="#2C3E50"
+                        android:fontFamily="sans-serif"
+                        android:background="@drawable/bg_fecha"
+                        android:padding="16dp"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                        android:drawableTint="#5DADE2"
+                        android:layout_marginBottom="32dp" />
+
+                    <!-- Botones -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btnCancelar"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_weight="1"
+                            android:text="Cancelar"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#7F8C8D"
+                            android:fontFamily="sans-serif-medium"
+                            android:background="@drawable/bg_btn_cancelar"
+                            android:layout_marginEnd="8dp"
+                            android:elevation="0dp"
+                            app:backgroundTint="@null" />
+
+                        <Button
+                            android:id="@+id/btnGuardar"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_weight="1"
+                            android:text="Guardar"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:fontFamily="sans-serif-medium"
+                            android:background="@drawable/bg_btn_guardar"
+                            android:layout_marginStart="8dp"
+                            app:backgroundTint="@null" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
