@@ -629,4 +629,91 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return cantidad;
     }
+
+    // ==================== MÉTODOS PARA GRÁFICOS ====================
+
+    // Obtener gastos agrupados por categoría del mes actual
+    public Cursor obtenerGastosPorCategoriaMes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Primer día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioMes = calendario.getTimeInMillis();
+
+        // Último día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendario.set(Calendar.HOUR_OF_DAY, 23);
+        calendario.set(Calendar.MINUTE, 59);
+        calendario.set(Calendar.SECOND, 59);
+        long finMes = calendario.getTimeInMillis();
+
+        return db.rawQuery(
+                "SELECT c." + COL_CAT_NOMBRE + ", c." + COL_CAT_COLOR + ", c." + COL_CAT_ICONO + ", " +
+                        "SUM(t." + COL_TRANS_MONTO + ") as total " +
+                        "FROM " + TABLE_TRANSACCIONES + " t " +
+                        "INNER JOIN " + TABLE_CATEGORIAS + " c ON t." + COL_TRANS_ID_CATEGORIA + " = c." + COL_CAT_ID +
+                        " WHERE t." + COL_TRANS_TIPO + "='gasto' AND t." + COL_TRANS_FECHA + " BETWEEN ? AND ? " +
+                        "GROUP BY t." + COL_TRANS_ID_CATEGORIA +
+                        " ORDER BY total DESC",
+                new String[]{String.valueOf(inicioMes), String.valueOf(finMes)}
+        );
+    }
+
+    // Obtener ingresos y gastos de los últimos N meses
+    public Cursor obtenerIngresosGastosPorMes(int cantidadMeses) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Ir N meses atrás
+        calendario.add(Calendar.MONTH, -cantidadMeses);
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioFecha = calendario.getTimeInMillis();
+
+        Calendar ahora = Calendar.getInstance();
+        long finFecha = ahora.getTimeInMillis();
+
+        return db.rawQuery(
+                "SELECT strftime('%Y-%m', datetime(" + COL_TRANS_FECHA + "/1000, 'unixepoch')) as mes, " +
+                        COL_TRANS_TIPO + ", SUM(" + COL_TRANS_MONTO + ") as total " +
+                        "FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_FECHA + " BETWEEN ? AND ? " +
+                        "GROUP BY mes, " + COL_TRANS_TIPO +
+                        " ORDER BY mes ASC",
+                new String[]{String.valueOf(inicioFecha), String.valueOf(finFecha)}
+        );
+    }
+
+    // Obtener gastos diarios de los últimos N días
+    public Cursor obtenerGastosDiarios(int cantidadDias) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Ir N días atrás
+        calendario.add(Calendar.DAY_OF_MONTH, -cantidadDias);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioFecha = calendario.getTimeInMillis();
+
+        Calendar ahora = Calendar.getInstance();
+        long finFecha = ahora.getTimeInMillis();
+
+        return db.rawQuery(
+                "SELECT date(" + COL_TRANS_FECHA + "/1000, 'unixepoch') as dia, " +
+                        "SUM(CASE WHEN " + COL_TRANS_TIPO + "='gasto' THEN " + COL_TRANS_MONTO + " ELSE 0 END) as gastos " +
+                        "FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_FECHA + " BETWEEN ? AND ? " +
+                        "GROUP BY dia " +
+                        "ORDER BY dia ASC",
+                new String[]{String.valueOf(inicioFecha), String.valueOf(finFecha)}
+        );
+    }
+
 }
