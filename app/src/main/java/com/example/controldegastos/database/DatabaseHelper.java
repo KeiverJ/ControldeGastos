@@ -13,7 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Nombre y versión de la base de datos
     private static final String DATABASE_NAME = "control_gastos.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incrementamos para actualizar
 
     // Tabla Categorías
     private static final String TABLE_CATEGORIAS = "categorias";
@@ -65,27 +65,78 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACCIONES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIAS);
-        onCreate(db);
+        if (oldVersion < 2) {
+            // Agregar nuevas categorías sin borrar las existentes
+            insertarCategoriasAdicionalesV2(db);
+        }
     }
 
-    // Insertar categorías iniciales
+    // Insertar categorías iniciales AMPLIADAS
     private void insertarCategoriasIniciales(SQLiteDatabase db) {
-        // Categorías de Gastos
+        // ============ CATEGORÍAS DE GASTOS ============
+        // Básicas
         insertarCategoriaInicial(db, "Alimentación", "gasto", "#FF6B6B", "🍔");
         insertarCategoriaInicial(db, "Transporte", "gasto", "#4ECDC4", "🚗");
         insertarCategoriaInicial(db, "Entretenimiento", "gasto", "#95E1D3", "🎮");
         insertarCategoriaInicial(db, "Salud", "gasto", "#F38181", "💊");
         insertarCategoriaInicial(db, "Educación", "gasto", "#AA96DA", "📚");
         insertarCategoriaInicial(db, "Servicios", "gasto", "#FCBAD3", "💡");
+
+        // Adicionales
+        insertarCategoriaInicial(db, "Vivienda", "gasto", "#FFB347", "🏠");
+        insertarCategoriaInicial(db, "Ropa y Calzado", "gasto", "#DDA0DD", "👕");
+        insertarCategoriaInicial(db, "Mascotas", "gasto", "#98D8C8", "🐾");
+        insertarCategoriaInicial(db, "Regalos", "gasto", "#F7B7A3", "🎁");
+        insertarCategoriaInicial(db, "Tecnología", "gasto", "#7EC8E3", "💻");
+        insertarCategoriaInicial(db, "Gimnasio", "gasto", "#C1E1C1", "💪");
+        insertarCategoriaInicial(db, "Seguros", "gasto", "#B4A7D6", "🛡️");
+        insertarCategoriaInicial(db, "Restaurantes", "gasto", "#FFD700", "🍽️");
+        insertarCategoriaInicial(db, "Cafetería", "gasto", "#D2691E", "☕");
+        insertarCategoriaInicial(db, "Compras", "gasto", "#FF69B4", "🛍️");
+        insertarCategoriaInicial(db, "Belleza", "gasto", "#FFC0CB", "💄");
+        insertarCategoriaInicial(db, "Viajes", "gasto", "#87CEEB", "✈️");
+        insertarCategoriaInicial(db, "Impuestos", "gasto", "#DC143C", "📋");
         insertarCategoriaInicial(db, "Otros Gastos", "gasto", "#A8D8EA", "📦");
 
-        // Categorías de Ingresos
+        // ============ CATEGORÍAS DE INGRESOS ============
+        // Básicas
         insertarCategoriaInicial(db, "Salario", "ingreso", "#38B000", "💰");
         insertarCategoriaInicial(db, "Freelance", "ingreso", "#5FD068", "💼");
         insertarCategoriaInicial(db, "Inversiones", "ingreso", "#8BC34A", "📈");
+
+        // Adicionales
+        insertarCategoriaInicial(db, "Bonos", "ingreso", "#7CB342", "🎯");
+        insertarCategoriaInicial(db, "Ventas", "ingreso", "#9CCC65", "🏪");
+        insertarCategoriaInicial(db, "Alquiler", "ingreso", "#AED581", "🏘️");
+        insertarCategoriaInicial(db, "Premios", "ingreso", "#C5E1A5", "🏆");
+        insertarCategoriaInicial(db, "Regalos Recibidos", "ingreso", "#DCEDC8", "🎁");
+        insertarCategoriaInicial(db, "Reembolsos", "ingreso", "#689F38", "💳");
         insertarCategoriaInicial(db, "Otros Ingresos", "ingreso", "#9CCC65", "💵");
+    }
+
+    // Método para agregar categorías adicionales en actualizaciones
+    private void insertarCategoriasAdicionalesV2(SQLiteDatabase db) {
+        // Verificar si ya existen antes de insertar
+        insertarCategoriaInicial(db, "Vivienda", "gasto", "#FFB347", "🏠");
+        insertarCategoriaInicial(db, "Ropa y Calzado", "gasto", "#DDA0DD", "👕");
+        insertarCategoriaInicial(db, "Mascotas", "gasto", "#98D8C8", "🐾");
+        insertarCategoriaInicial(db, "Regalos", "gasto", "#F7B7A3", "🎁");
+        insertarCategoriaInicial(db, "Tecnología", "gasto", "#7EC8E3", "💻");
+        insertarCategoriaInicial(db, "Gimnasio", "gasto", "#C1E1C1", "💪");
+        insertarCategoriaInicial(db, "Seguros", "gasto", "#B4A7D6", "🛡️");
+        insertarCategoriaInicial(db, "Restaurantes", "gasto", "#FFD700", "🍽️");
+        insertarCategoriaInicial(db, "Cafetería", "gasto", "#D2691E", "☕");
+        insertarCategoriaInicial(db, "Compras", "gasto", "#FF69B4", "🛍️");
+        insertarCategoriaInicial(db, "Belleza", "gasto", "#FFC0CB", "💄");
+        insertarCategoriaInicial(db, "Viajes", "gasto", "#87CEEB", "✈️");
+        insertarCategoriaInicial(db, "Impuestos", "gasto", "#DC143C", "📋");
+
+        insertarCategoriaInicial(db, "Bonos", "ingreso", "#7CB342", "🎯");
+        insertarCategoriaInicial(db, "Ventas", "ingreso", "#9CCC65", "🏪");
+        insertarCategoriaInicial(db, "Alquiler", "ingreso", "#AED581", "🏘️");
+        insertarCategoriaInicial(db, "Premios", "ingreso", "#C5E1A5", "🏆");
+        insertarCategoriaInicial(db, "Regalos Recibidos", "ingreso", "#DCEDC8", "🎁");
+        insertarCategoriaInicial(db, "Reembolsos", "ingreso", "#689F38", "💳");
     }
 
     private void insertarCategoriaInicial(SQLiteDatabase db, String nombre, String tipo, String color, String icono) {
@@ -97,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_CATEGORIAS, null, values);
     }
 
-    // Metodos para categorias
+    // ==================== MÉTODOS PARA CATEGORÍAS ====================
 
     public long insertarCategoria(String nombre, String tipo, String color, String icono) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -107,6 +158,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_CAT_COLOR, color);
         values.put(COL_CAT_ICONO, icono);
         return db.insert(TABLE_CATEGORIAS, null, values);
+    }
+
+    public int actualizarCategoria(int id, String nombre, String color, String icono) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_CAT_NOMBRE, nombre);
+        values.put(COL_CAT_COLOR, color);
+        values.put(COL_CAT_ICONO, icono);
+        return db.update(TABLE_CATEGORIAS, values, COL_CAT_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
+    public void eliminarCategoria(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CATEGORIAS, COL_CAT_ID + "=?", new String[]{String.valueOf(id)});
     }
 
     public List<String[]> obtenerCategoriasPorTipo(String tipo) {
@@ -133,6 +198,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categorias;
     }
 
+    public Cursor obtenerTodasCategorias() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_CATEGORIAS +
+                " ORDER BY " + COL_CAT_TIPO + " ASC, " + COL_CAT_NOMBRE + " ASC", null);
+    }
+
     public String[] obtenerCategoriaPorId(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_CATEGORIAS,
@@ -153,7 +224,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    // Metodos para transacciones
+    // ==================== MÉTODOS PARA TRANSACCIONES ====================
 
     public long insertarTransaccion(double monto, String descripcion, long fecha, String tipo, int idCategoria) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -201,6 +272,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " WHERE " + COL_TRANS_FECHA + " BETWEEN ? AND ? ORDER BY " +
                         COL_TRANS_FECHA + " DESC",
                 new String[]{String.valueOf(fechaInicio), String.valueOf(fechaFin)});
+    }
+
+    public Cursor buscarTransacciones(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_DESCRIPCION + " LIKE ? ORDER BY " +
+                        COL_TRANS_FECHA + " DESC",
+                new String[]{"%" + query + "%"});
     }
 
     public double calcularBalance() {

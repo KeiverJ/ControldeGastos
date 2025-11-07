@@ -10,9 +10,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,12 +39,14 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
     private RecyclerView recyclerView;
     private TransaccionAdapter adapter;
     private List<Transaccion> listaTransacciones;
+    private List<Transaccion> listaTransaccionesCompleta; // Para búsqueda
     private DatabaseHelper dbHelper;
 
     private TextView tvBalance, tvTotalIngresos, tvTotalGastos;
     private TextView tvBienvenida, tvFechaHoy;
     private LinearLayout tvSinTransacciones;
     private FloatingActionButton fabAgregar;
+    private SearchView searchView;
 
     private static final String PREFS_NAME = "MisPreferencias";
     private static final String KEY_PRIMERA_VEZ = "primeraVez";
@@ -54,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
         // Configurar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Control de Gastos");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(""); // Título vacío para usar TextView personalizado
+        }
 
         // Inicializar vistas
         inicializarVistas();
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
         // Configurar RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listaTransacciones = new ArrayList<>();
+        listaTransaccionesCompleta = new ArrayList<>();
         adapter = new TransaccionAdapter(this, listaTransacciones, this);
         recyclerView.setAdapter(adapter);
 
@@ -143,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
 
     private void cargarTransacciones() {
         listaTransacciones.clear();
+        listaTransaccionesCompleta.clear();
         Cursor cursor = dbHelper.obtenerTodasTransacciones();
 
         if (cursor.moveToFirst()) {
@@ -167,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
                 }
 
                 listaTransacciones.add(transaccion);
+                listaTransaccionesCompleta.add(transaccion);
             } while (cursor.moveToNext());
         } else {
             tvSinTransacciones.setVisibility(View.VISIBLE);
@@ -195,6 +205,35 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
         }
     }
 
+    private void buscarTransacciones(String query) {
+        listaTransacciones.clear();
+
+        if (query.isEmpty()) {
+            // Si la búsqueda está vacía, mostrar todas
+            listaTransacciones.addAll(listaTransaccionesCompleta);
+        } else {
+            // Filtrar por descripción o categoría
+            for (Transaccion t : listaTransaccionesCompleta) {
+                if (t.getDescripcion().toLowerCase().contains(query.toLowerCase()) ||
+                        t.getNombreCategoria().toLowerCase().contains(query.toLowerCase())) {
+                    listaTransacciones.add(t);
+                }
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+
+        // Mostrar mensaje si no hay resultados
+        if (listaTransacciones.isEmpty() && !query.isEmpty()) {
+            tvSinTransacciones.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            Toast.makeText(this, "No se encontraron resultados para: " + query, Toast.LENGTH_SHORT).show();
+        } else {
+            tvSinTransacciones.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -211,6 +250,28 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Configurar SearchView
+        MenuItem searchItem = menu.findItem(R.id.menu_buscar);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setQueryHint("Buscar transacciones...");
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscarTransacciones(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                buscarTransacciones(newText);
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -222,7 +283,9 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
             mostrarDialogoFiltros();
             return true;
         } else if (id == R.id.menu_categorias) {
-            Toast.makeText(this, "📂 Gestionar categorías (próximamente)", Toast.LENGTH_SHORT).show();
+            // Abrir Activity de categorías
+            Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.menu_acerca) {
             mostrarDialogoAcercaDe();
@@ -297,9 +360,9 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
     private void mostrarDialogoAcercaDe() {
         new AlertDialog.Builder(this)
                 .setTitle("ℹ️ Acerca de")
-                .setMessage("💙 Control de Gastos v1.0\n\n" +
-                        "Creado con ❤️ por Keiver\n\n" +
-                        "Una aplicación para gestionar tus finanzas personales de forma sencilla y elegante.\n\n" +
+                .setMessage("Control de Gastos\n\n" +
+                        "Creado con por Keiver\n\n" +
+                        "Una aplicación para gestionar tus finanzas personales.\n\n" +
                         "© 2024 - Todos los derechos reservados")
                 .setPositiveButton("Cerrar", null)
                 .show();

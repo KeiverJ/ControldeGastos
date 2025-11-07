@@ -2,22 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Búsqueda -->
+    <item
+        android:id="@+id/menu_buscar"
+        android:title="Buscar"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <!-- Filtrar -->
     <item
         android:id="@+id/menu_filtrar"
         android:title="Filtrar"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="never" />
 
+    <!-- Categorías -->
     <item
         android:id="@+id/menu_categorias"
-        android:title="Categorías"
-        android:icon="@android:drawable/ic_menu_view"
+        android:title="Gestionar Categorías"
         app:showAsAction="never" />
 
+    <!-- Acerca de -->
     <item
         android:id="@+id/menu_acerca"
         android:title="Acerca de"
-        android:icon="@android:drawable/ic_menu_info_details"
         app:showAsAction="never" />
 
 </menu>

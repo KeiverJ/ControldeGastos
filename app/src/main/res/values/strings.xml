@@ -1,3 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ControldeGastos</string>
+    <!-- App Name -->
+    <string name="app_name">Control de Gastos</string>
+
+    <!-- Activities -->
+    <string name="title_main">Control de Gastos</string>
+    <string name="title_agregar">Nueva Transacción</string>
+    <string name="title_editar">Editar Transacción</string>
+    <string name="title_categorias">Gestionar Categorías</string>
+
+    <!-- Buttons -->
+    <string name="btn_guardar">Guardar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_actualizar">Actualizar</string>
+    <string name="btn_eliminar">Eliminar</string>
+    <string name="btn_editar">Editar</string>
+    <string name="btn_agregar">Agregar</string>
+    <string name="btn_buscar">Buscar</string>
+
+    <!-- Labels -->
+    <string name="label_monto">Monto</string>
+    <string name="label_descripcion">Descripción</string>
+    <string name="label_categoria">Categoría</string>
+    <string name="label_fecha">Fecha</string>
+    <string name="label_tipo">Tipo</string>
+    <string name="label_balance">Balance Total</string>
+    <string name="label_ingresos">Ingresos</string>
+    <string name="label_gastos">Gastos</string>
+
+    <!-- Hints -->
+    <string name="hint_monto">Ej: 50000</string>
+    <string name="hint_descripcion">Ej: Supermercado</string>
+    <string name="hint_buscar">Buscar transacciones…</string>
+    <string name="hint_nombre_categoria">Nombre de la categoría</string>
+    <string name="hint_emoji">Emoji</string>
+
+    <!-- Types -->
+    <string name="tipo_ingreso">↗️ Ingreso</string>
+    <string name="tipo_gasto">↘️ Gasto</string>
+
+    <!-- Messages -->
+    <string name="msg_sin_transacciones">No hay transacciones</string>
+    <string name="msg_presiona_agregar">Presiona el botón ➕ para comenzar</string>
+    <string name="msg_transaccion_guardada">Transacción guardada exitosamente</string>
+    <string name="msg_transaccion_actualizada">Transacción actualizada exitosamente</string>
+    <string name="msg_transaccion_eliminada">Transacción eliminada</string>
+    <string name="msg_categoria_creada">Categoría creada exitosamente</string>
+    <string name="msg_categoria_actualizada">Categoría actualizada</string>
+    <string name="msg_categoria_eliminada">Categoría eliminada</string>
+    <string name="msg_error_guardar">Error al guardar</string>
+    <string name="msg_ingresa_monto">Por favor ingresa un monto</string>
+    <string name="msg_monto_mayor_cero">El monto debe ser mayor a 0</string>
+    <string name="msg_selecciona_categoria">Por favor selecciona una categoría</string>
+
+    <!-- Menu -->
+    <string name="menu_buscar">Buscar</string>
+    <string name="menu_filtrar">Filtrar</string>
+    <string name="menu_categorias">Gestionar Categorías</string>
+    <string name="menu_acerca">Acerca de</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_eliminar_titulo">Eliminar Transacción</string>
+    <string name="dialog_eliminar_mensaje">¿Estás seguro de eliminar esta transacción?</string>
+    <string name="dialog_eliminar_categoria_titulo">Eliminar Categoría</string>
+    <string name="dialog_eliminar_categoria_mensaje">¿Estás seguro de eliminar esta categoría?\n\nNota: Las transacciones asociadas no se eliminarán.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_agregar_transaccion">Agregar transacción</string>
+    <string name="cd_agregar_categoria">Agregar categoría</string>
+    <string name="cd_editar">Editar</string>
+    <string name="cd_eliminar">Eliminar</string>
 </resources>

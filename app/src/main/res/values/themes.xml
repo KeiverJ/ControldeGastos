@@ -1,13 +1,37 @@
-<resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
+    <style name="Base.Theme.ControlDeGastos" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Colores principales -->
         <item name="colorPrimary">#5DADE2</item>
-        <item name="colorPrimaryDark">#3498DB</item>
-        <item name="colorAccent">#5DADE2</item>
-        <item name="android:statusBarColor">#3498DB</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">#FFFFFF</item>
-        <item name="popupMenuStyle">@style/PopupMenuStyle</item>
-        <item name="android:textColorPrimary">#2C3E50</item>
-        <item name="android:textColorSecondary">#7F8C8D</item>
+        <item name="colorPrimaryVariant">#3498DB</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <item name="colorSecondary">#27AE60</item>
+        <item name="colorSecondaryVariant">#229954</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <item name="colorError">#E74C3C</item>
+        <item name="colorOnError">#FFFFFF</item>
+
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#2C3E50</item>
+
+        <item name="android:colorBackground">#F0F4F8</item>
+        <item name="colorOnBackground">#2C3E50</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <!-- Para evitar que el contenido se superponga con la barra de estado -->
+        <item name="android:fitsSystemWindows">false</item>
+
+        <!-- Navigation Bar -->
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
+
+    <style name="Theme.ControlDeGastos" parent="Base.Theme.ControlDeGastos" />
 </resources>
