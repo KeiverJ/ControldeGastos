@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +31,8 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.AlertDialog;
+
+import com.example.controldegastos.activities.ConfiguracionActivity;
 
 public class MainActivity extends AppCompatActivity implements TransaccionAdapter.OnTransaccionChangeListener {
 
@@ -283,8 +283,15 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
             mostrarDialogoFiltros();
             return true;
         } else if (id == R.id.menu_categorias) {
-            // Abrir Activity de categorías
             Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.menu_estadisticas) {
+            Intent intent = new Intent(MainActivity.this, EstadisticasActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.menu_configuracion) {  // ⭐ NUEVO
+            Intent intent = new Intent(MainActivity.this, ConfiguracionActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.menu_acerca) {
@@ -294,7 +301,6 @@ public class MainActivity extends AppCompatActivity implements TransaccionAdapte
 
         return super.onOptionsItemSelected(item);
     }
-
     private void mostrarDialogoFiltros() {
         String[] opciones = {"Todas", "Solo Ingresos", "Solo Gastos", "Por Categoría", "Por Fecha"};
 

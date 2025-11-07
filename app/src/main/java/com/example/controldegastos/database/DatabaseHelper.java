@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -315,5 +316,317 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return total;
+    }
+
+    // ==================== MÉTODOS PARA ESTADÍSTICAS ====================
+
+    // Obtener total de ingresos/gastos del mes actual
+    public double obtenerTotalMesActual(String tipo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Primer día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioMes = calendario.getTimeInMillis();
+
+        // Último día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendario.set(Calendar.HOUR_OF_DAY, 23);
+        calendario.set(Calendar.MINUTE, 59);
+        calendario.set(Calendar.SECOND, 59);
+        long finMes = calendario.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COL_TRANS_MONTO + ") FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_TIPO + "=? AND " + COL_TRANS_FECHA +
+                        " BETWEEN ? AND ?",
+                new String[]{tipo, String.valueOf(inicioMes), String.valueOf(finMes)}
+        );
+
+        double total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+        return total;
+    }
+
+    // Obtener total de mes anterior
+    public double obtenerTotalMesAnterior(String tipo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Ir al mes anterior
+        calendario.add(Calendar.MONTH, -1);
+
+        // Primer día del mes anterior
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioMes = calendario.getTimeInMillis();
+
+        // Último día del mes anterior
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendario.set(Calendar.HOUR_OF_DAY, 23);
+        calendario.set(Calendar.MINUTE, 59);
+        calendario.set(Calendar.SECOND, 59);
+        long finMes = calendario.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COL_TRANS_MONTO + ") FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_TIPO + "=? AND " + COL_TRANS_FECHA +
+                        " BETWEEN ? AND ?",
+                new String[]{tipo, String.valueOf(inicioMes), String.valueOf(finMes)}
+        );
+
+        double total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+        return total;
+    }
+
+    // Obtener categoría más gastada del mes
+    public String[] obtenerCategoriaMasGastada() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Primer día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioMes = calendario.getTimeInMillis();
+
+        // Último día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendario.set(Calendar.HOUR_OF_DAY, 23);
+        calendario.set(Calendar.MINUTE, 59);
+        calendario.set(Calendar.SECOND, 59);
+        long finMes = calendario.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT c." + COL_CAT_NOMBRE + ", c." + COL_CAT_ICONO + ", SUM(t." + COL_TRANS_MONTO + ") as total " +
+                        "FROM " + TABLE_TRANSACCIONES + " t " +
+                        "INNER JOIN " + TABLE_CATEGORIAS + " c ON t." + COL_TRANS_ID_CATEGORIA + " = c." + COL_CAT_ID +
+                        " WHERE t." + COL_TRANS_TIPO + "='gasto' AND t." + COL_TRANS_FECHA + " BETWEEN ? AND ? " +
+                        "GROUP BY t." + COL_TRANS_ID_CATEGORIA +
+                        " ORDER BY total DESC LIMIT 1",
+                new String[]{String.valueOf(inicioMes), String.valueOf(finMes)}
+        );
+
+        String[] resultado = new String[3]; // [nombre, icono, monto]
+        if (cursor.moveToFirst()) {
+            resultado[0] = cursor.getString(0); // nombre
+            resultado[1] = cursor.getString(1); // icono
+            resultado[2] = String.valueOf(cursor.getDouble(2)); // monto
+        } else {
+            resultado[0] = "Ninguna";
+            resultado[1] = "📊";
+            resultado[2] = "0";
+        }
+        cursor.close();
+        return resultado;
+    }
+
+    // Obtener total de transacciones del mes
+    public int obtenerTotalTransaccionesMes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Primer día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioMes = calendario.getTimeInMillis();
+
+        // Último día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendario.set(Calendar.HOUR_OF_DAY, 23);
+        calendario.set(Calendar.MINUTE, 59);
+        calendario.set(Calendar.SECOND, 59);
+        long finMes = calendario.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_FECHA + " BETWEEN ? AND ?",
+                new String[]{String.valueOf(inicioMes), String.valueOf(finMes)}
+        );
+
+        int total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0);
+        }
+        cursor.close();
+        return total;
+    }
+
+    // Obtener días con actividad en el mes
+    public int obtenerDiasConGastosMes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar calendario = Calendar.getInstance();
+
+        // Primer día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        calendario.set(Calendar.HOUR_OF_DAY, 0);
+        calendario.set(Calendar.MINUTE, 0);
+        calendario.set(Calendar.SECOND, 0);
+        long inicioMes = calendario.getTimeInMillis();
+
+        // Último día del mes
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendario.set(Calendar.HOUR_OF_DAY, 23);
+        calendario.set(Calendar.MINUTE, 59);
+        calendario.set(Calendar.SECOND, 59);
+        long finMes = calendario.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(DISTINCT date(" + COL_TRANS_FECHA + "/1000, 'unixepoch')) FROM " +
+                        TABLE_TRANSACCIONES + " WHERE " + COL_TRANS_FECHA + " BETWEEN ? AND ?",
+                new String[]{String.valueOf(inicioMes), String.valueOf(finMes)}
+        );
+
+        int dias = 0;
+        if (cursor.moveToFirst()) {
+            dias = cursor.getInt(0);
+        }
+        cursor.close();
+        return dias;
+    }
+
+    // Obtener promedio de gastos diarios del mes
+    public double obtenerPromedioGastoDiario() {
+        double totalGastos = obtenerTotalMesActual("gasto");
+        int diasConGastos = obtenerDiasConGastosMes();
+
+        if (diasConGastos > 0) {
+            return totalGastos / diasConGastos;
+        }
+        return 0;
+    }
+
+// ==================== MÉTODOS PARA NOTIFICACIONES ====================
+
+    // Obtener transacciones de hoy
+    public Cursor obtenerTransaccionesHoy() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar hoy = Calendar.getInstance();
+
+        hoy.set(Calendar.HOUR_OF_DAY, 0);
+        hoy.set(Calendar.MINUTE, 0);
+        hoy.set(Calendar.SECOND, 0);
+        long inicioHoy = hoy.getTimeInMillis();
+
+        hoy.set(Calendar.HOUR_OF_DAY, 23);
+        hoy.set(Calendar.MINUTE, 59);
+        hoy.set(Calendar.SECOND, 59);
+        long finHoy = hoy.getTimeInMillis();
+
+        return db.rawQuery("SELECT * FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_FECHA + " BETWEEN ? AND ?",
+                new String[]{String.valueOf(inicioHoy), String.valueOf(finHoy)});
+    }
+
+    // Obtener total gastado hoy
+    public double obtenerTotalGastadoHoy() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar hoy = Calendar.getInstance();
+
+        hoy.set(Calendar.HOUR_OF_DAY, 0);
+        hoy.set(Calendar.MINUTE, 0);
+        hoy.set(Calendar.SECOND, 0);
+        long inicioHoy = hoy.getTimeInMillis();
+
+        hoy.set(Calendar.HOUR_OF_DAY, 23);
+        hoy.set(Calendar.MINUTE, 59);
+        hoy.set(Calendar.SECOND, 59);
+        long finHoy = hoy.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COL_TRANS_MONTO + ") FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_TIPO + "='gasto' AND " + COL_TRANS_FECHA +
+                        " BETWEEN ? AND ?",
+                new String[]{String.valueOf(inicioHoy), String.valueOf(finHoy)}
+        );
+
+        double total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+        return total;
+    }
+
+    // Obtener total de ingresos hoy
+    public double obtenerTotalIngresosHoy() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar hoy = Calendar.getInstance();
+
+        hoy.set(Calendar.HOUR_OF_DAY, 0);
+        hoy.set(Calendar.MINUTE, 0);
+        hoy.set(Calendar.SECOND, 0);
+        long inicioHoy = hoy.getTimeInMillis();
+
+        hoy.set(Calendar.HOUR_OF_DAY, 23);
+        hoy.set(Calendar.MINUTE, 59);
+        hoy.set(Calendar.SECOND, 59);
+        long finHoy = hoy.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COL_TRANS_MONTO + ") FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_TIPO + "='ingreso' AND " + COL_TRANS_FECHA +
+                        " BETWEEN ? AND ?",
+                new String[]{String.valueOf(inicioHoy), String.valueOf(finHoy)}
+        );
+
+        double total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+        return total;
+    }
+
+    // Obtener promedio de gastos diarios (últimos 30 días)
+    public double obtenerPromedioGastoDiarioUltimos30Dias() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar hace30Dias = Calendar.getInstance();
+        hace30Dias.add(Calendar.DAY_OF_MONTH, -30);
+        hace30Dias.set(Calendar.HOUR_OF_DAY, 0);
+        hace30Dias.set(Calendar.MINUTE, 0);
+        hace30Dias.set(Calendar.SECOND, 0);
+        long inicio30Dias = hace30Dias.getTimeInMillis();
+
+        Calendar ahora = Calendar.getInstance();
+        long fin = ahora.getTimeInMillis();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COL_TRANS_MONTO + ") FROM " + TABLE_TRANSACCIONES +
+                        " WHERE " + COL_TRANS_TIPO + "='gasto' AND " + COL_TRANS_FECHA +
+                        " BETWEEN ? AND ?",
+                new String[]{String.valueOf(inicio30Dias), String.valueOf(fin)}
+        );
+
+        double total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+
+        return total / 30.0; // Promedio diario
+    }
+
+    // Obtener cantidad de transacciones hoy
+    public int obtenerCantidadTransaccionesHoy() {
+        Cursor cursor = obtenerTransaccionesHoy();
+        int cantidad = cursor.getCount();
+        cursor.close();
+        return cantidad;
     }
 }

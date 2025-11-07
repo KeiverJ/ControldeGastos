@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos para notificaciones -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -41,6 +45,19 @@
         <!-- CategoriasActivity -->
         <activity
             android:name=".activities.CategoriasActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/Theme.ControlDeGastos" />
+
+        <!-- EstadisticasActivity -->
+        <activity
+            android:name=".activities.EstadisticasActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/Theme.ControlDeGastos" />
+
+        <activity
+            android:name=".activities.ConfiguracionActivity"
             android:exported="false"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/Theme.ControlDeGastos" />

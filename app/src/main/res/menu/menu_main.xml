@@ -10,11 +10,22 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
+    <!-- Estadísticas -->
+    <item
+        android:id="@+id/menu_estadisticas"
+        android:title="Estadísticas"
+        app:showAsAction="never" />
+
+    <!-- Configuración -->
+    <item
+        android:id="@+id/menu_configuracion"
+        android:title="Configuración"
+        app:showAsAction="never" />
+
     <!-- Filtrar -->
     <item
         android:id="@+id/menu_filtrar"
         android:title="Filtrar"
-        android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="never" />
 
     <!-- Categorías -->
